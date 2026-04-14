@@ -14,10 +14,10 @@ export class TrainingStore {
 
   _seedData() {
     const seed = [
-      { id: 1, type: 'run', distance: 10, duration: 50, intensity: 7, notes: '조깅 10k', cadence: 175, date: new Date(Date.now() - 86400000 * 1).toISOString() },
-      { id: 2, type: 'bike', distance: 40, duration: 80, intensity: 6, notes: '평지 라이딩', power: 180, cadence: 90, date: new Date(Date.now() - 86400000 * 2).toISOString() },
-      { id: 3, type: 'swim', distance: 1500, duration: 30, intensity: 5, notes: '드릴 위주', date: new Date(Date.now() - 86400000 * 3).toISOString() },
-      { id: 4, type: 'run', distance: 5, duration: 22, intensity: 8, notes: '인터벌 훈련', cadence: 182, date: new Date(Date.now() - 86400000 * 4).toISOString() },
+      { id: 1, type: 'run', distance: 10, duration: 50, notes: '조깅 10k', cadence: 175, date: new Date(Date.now() - 86400000 * 1).toISOString() },
+      { id: 2, type: 'bike', distance: 40, duration: 80, notes: '평지 라이딩', power: 180, cadence: 90, date: new Date(Date.now() - 86400000 * 2).toISOString() },
+      { id: 3, type: 'swim', distance: 1500, duration: 30, notes: '드릴 위주', date: new Date(Date.now() - 86400000 * 3).toISOString() },
+      { id: 4, type: 'run', distance: 5, duration: 22, notes: '인터벌 훈련', cadence: 182, date: new Date(Date.now() - 86400000 * 4).toISOString() },
     ];
     localStorage.setItem('tri-activities', JSON.stringify(seed));
     return seed;

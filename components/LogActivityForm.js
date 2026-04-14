@@ -80,10 +80,6 @@ class LogActivityForm extends HTMLElement {
           </div>
         </div>
         <div class="form-group">
-          <label for="intensity">강도 (1-10)</label>
-          <input type="range" id="intensity" name="intensity" min="1" max="10" value="5">
-        </div>
-        <div class="form-group">
           <label for="notes">메모</label>
           <input type="text" id="notes" name="notes" placeholder="훈련 내용 요약">
         </div>
