@@ -5,11 +5,18 @@ import './components/AIAssistant.js';
 class App {
   constructor() {
     this.chart = null;
+    this.filters = {
+      type: 'month',
+      year: new Date().getFullYear().toString(),
+      month: new Date().getMonth().toString(),
+      week: 'all'
+    };
     this.init();
   }
 
   init() {
     this.setupNavigation();
+    this.setupFilters();
     this.updateDashboard();
     this.renderHistory();
     this.initChart();
@@ -37,8 +44,65 @@ class App {
     });
   }
 
+  setupFilters() {
+    const typeSelect = document.getElementById('filter-type');
+    const yearSelect = document.getElementById('filter-year');
+    const monthSelect = document.getElementById('filter-month');
+    const weekSelect = document.getElementById('filter-week');
+
+    // Populate Years
+    const years = store.getYears();
+    yearSelect.innerHTML = years.map(y => `<option value="${y}" ${y === this.filters.year ? 'selected' : ''}>${y}년</option>`).join('');
+
+    const updateFilterVisibility = () => {
+      const type = typeSelect.value;
+      document.getElementById('group-month').style.display = type === 'year' ? 'none' : 'block';
+      document.getElementById('group-week').style.display = type === 'week' ? 'block' : 'none';
+      
+      if (type === 'week') {
+        this.populateWeeks();
+      }
+    };
+
+    typeSelect.addEventListener('change', (e) => {
+      this.filters.type = e.target.value;
+      updateFilterVisibility();
+      this.updateDashboard();
+      this.updateChart();
+    });
+
+    yearSelect.addEventListener('change', (e) => {
+      this.filters.year = e.target.value;
+      if (this.filters.type === 'week') this.populateWeeks();
+      this.updateDashboard();
+      this.updateChart();
+    });
+
+    monthSelect.addEventListener('change', (e) => {
+      this.filters.month = e.target.value;
+      if (this.filters.type === 'week') this.populateWeeks();
+      this.updateDashboard();
+      this.updateChart();
+    });
+
+    weekSelect.addEventListener('change', (e) => {
+      this.filters.week = e.target.value;
+      this.updateDashboard();
+      this.updateChart();
+    });
+
+    updateFilterVisibility();
+  }
+
+  populateWeeks() {
+    const weekSelect = document.getElementById('filter-week');
+    const weeks = store.getWeeksOfMonth(this.filters.year, this.filters.month);
+    weekSelect.innerHTML = weeks.map(w => `<option value="${w}">${w}주차</option>`).join('');
+    this.filters.week = weekSelect.value;
+  }
+
   updateDashboard() {
-    const totals = store.getTotals();
+    const totals = store.getTotals(this.filters.type, this.filters.year, this.filters.month, this.filters.week);
     document.getElementById('swim-total-dist').textContent = totals.swim.dist.toLocaleString();
     document.getElementById('swim-total-time').textContent = totals.swim.time.toLocaleString();
     document.getElementById('bike-total-dist').textContent = totals.bike.dist.toLocaleString();
@@ -102,7 +166,7 @@ class App {
 
   initChart() {
     const ctx = document.getElementById('volumeChart').getContext('2d');
-    const data = store.getWeeklyData();
+    const data = store.getFilteredChartData(this.filters.type, this.filters.year, this.filters.month, this.filters.week);
     this.chart = new Chart(ctx, {
       type: 'bar',
       data: {
@@ -125,11 +189,17 @@ class App {
   }
 
   updateChart() {
-    const data = store.getWeeklyData();
+    const data = store.getFilteredChartData(this.filters.type, this.filters.year, this.filters.month, this.filters.week);
     this.chart.data.labels = data.labels;
     this.chart.data.datasets[0].data = data.swimData;
     this.chart.data.datasets[1].data = data.bikeData;
     this.chart.data.datasets[2].data = data.runData;
+    
+    // Update chart title/labels based on view
+    const title = this.filters.type === 'year' ? '월간 훈련량 (분)' : 
+                  this.filters.type === 'month' ? '일간 훈련량 (분)' : '주간 일일 훈련량 (분)';
+    this.chart.options.plugins.title = { display: true, text: title, color: '#ecf0f1' };
+    
     this.chart.update();
   }
 }

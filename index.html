@@ -50,6 +50,36 @@
       </header>
 
       <div id="view-dashboard" class="view active">
+        <section class="filter-bar">
+          <div class="filter-group">
+            <label for="filter-type">조회 단위</label>
+            <select id="filter-type">
+              <option value="year">연간</option>
+              <option value="month" selected>월간</option>
+              <option value="week">주간</option>
+            </select>
+          </div>
+          <div class="filter-group" id="group-year">
+            <label for="filter-year">연도</label>
+            <select id="filter-year"></select>
+          </div>
+          <div class="filter-group" id="group-month">
+            <label for="filter-month">월</label>
+            <select id="filter-month">
+              <option value="0">1월</option><option value="1">2월</option>
+              <option value="2">3월</option><option value="3">4월</option>
+              <option value="4">5월</option><option value="5">6월</option>
+              <option value="6">7월</option><option value="7">8월</option>
+              <option value="8" selected>9월</option><option value="9">10월</option>
+              <option value="10">11월</option><option value="11">12월</option>
+            </select>
+          </div>
+          <div class="filter-group" id="group-week" style="display: none;">
+            <label for="filter-week">주차</label>
+            <select id="filter-week"></select>
+          </div>
+        </section>
+
         <section class="metrics-grid">
           <div class="metric-card swim-card">
             <div class="card-header">

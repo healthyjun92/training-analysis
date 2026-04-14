@@ -147,6 +147,34 @@
     text-align: center;
   }
 
+  /* Filter Bar */
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    background-color: var(--color-surface);
+    padding: 1.25rem;
+    border-radius: var(--radius-md);
+    border: 1px solid oklch(0.25 0.02 250);
+  }
+
+  .filter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .filter-group label {
+    margin-bottom: 0;
+    white-space: nowrap;
+  }
+
+  .filter-group select {
+    width: 120px;
+    padding: 0.5rem;
+  }
+
   /* Metric Cards */
   .metrics-grid {
     display: grid;
