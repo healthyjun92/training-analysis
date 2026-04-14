@@ -1,14 +1,118 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hello World</title>
-  <link href='/style.css' rel='stylesheet'>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Triathlon Performance Tracker</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Fonts: Inter for general UI, Roboto Mono for numbers -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <!-- Chart.js and Lucide Icons -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
-  <h1>Hello, world!</h1>
-  <button onclick="console.log('hello');">Press me</button>
-  <script defer type="text/javascript" src="/main.js"></script>
+  <div class="app-container">
+    <aside class="sidebar">
+      <div class="logo">
+        <i data-lucide="activity"></i>
+        <span>TRI-PERFORMANCE</span>
+      </div>
+      <nav class="sidebar-nav">
+        <button class="nav-btn active" data-view="dashboard">
+          <i data-lucide="layout-dashboard"></i> 대시보드
+        </button>
+        <button class="nav-btn" data-view="log">
+          <i data-lucide="plus-circle"></i> 운동 기록
+        </button>
+        <button class="nav-btn" data-view="history">
+          <i data-lucide="history"></i> 히스토리
+        </button>
+        <button class="nav-btn ai-btn" data-view="ai">
+          <i data-lucide="sparkles"></i> AI 코치
+        </button>
+      </nav>
+      <div class="sidebar-footer">
+        <p>수영 • 자전거 • 달리기</p>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="top-bar">
+        <h1>나의 훈련 분석</h1>
+        <div class="user-stats">
+          <span class="badge swim">수영</span>
+          <span class="badge bike">자전거</span>
+          <span class="badge run">달리기</span>
+        </div>
+      </header>
+
+      <div id="view-dashboard" class="view active">
+        <section class="metrics-grid">
+          <div class="metric-card swim-card">
+            <div class="card-header">
+              <i data-lucide="waves"></i>
+              <h3>수영 누적</h3>
+            </div>
+            <div class="card-value"><span id="swim-total-dist">0</span> m</div>
+            <div class="card-subtext">총 <span id="swim-total-time">0</span>분</div>
+          </div>
+          <div class="metric-card bike-card">
+            <div class="card-header">
+              <i data-lucide="bike"></i>
+              <h3>자전거 누적</h3>
+            </div>
+            <div class="card-value"><span id="bike-total-dist">0</span> km</div>
+            <div class="card-subtext">총 <span id="bike-total-time">0</span>분</div>
+          </div>
+          <div class="metric-card run-card">
+            <div class="card-header">
+              <i data-lucide="footprints"></i>
+              <h3>달리기 누적</h3>
+            </div>
+            <div class="card-value"><span id="run-total-dist">0</span> km</div>
+            <div class="card-subtext">총 <span id="run-total-time">0</span>분</div>
+          </div>
+        </section>
+
+        <section class="charts-container">
+          <div class="chart-wrapper">
+            <h3>주간 훈련량 (분)</h3>
+            <canvas id="volumeChart"></canvas>
+          </div>
+        </section>
+      </div>
+
+      <div id="view-log" class="view">
+        <section class="log-container">
+          <h2>새로운 훈련 기록</h2>
+          <log-activity-form></log-activity-form>
+        </section>
+      </div>
+
+      <div id="view-history" class="view">
+        <section class="history-container">
+          <h2>최근 기록</h2>
+          <div id="activity-list" class="activity-list">
+            <!-- Training cards will be injected here -->
+          </div>
+        </section>
+      </div>
+
+      <div id="view-ai" class="view">
+        <section class="ai-container">
+          <h2>AI 철인 코치</h2>
+          <ai-assistant></ai-assistant>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="main.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
 </body>
 </html>
