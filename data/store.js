@@ -14,10 +14,10 @@ export class TrainingStore {
 
   _seedData() {
     const seed = [
-      { id: 1, type: 'run', distance: 10, duration: 55, intensity: 7, notes: '조깅 10k', date: new Date(Date.now() - 86400000 * 1).toISOString() },
-      { id: 2, type: 'bike', distance: 40, duration: 90, intensity: 6, notes: '평지 라이딩', date: new Date(Date.now() - 86400000 * 2).toISOString() },
-      { id: 3, type: 'swim', distance: 1500, duration: 35, intensity: 5, notes: '드릴 위주', date: new Date(Date.now() - 86400000 * 3).toISOString() },
-      { id: 4, type: 'run', distance: 5, duration: 25, intensity: 8, notes: '인터벌 훈련', date: new Date(Date.now() - 86400000 * 4).toISOString() },
+      { id: 1, type: 'run', distance: 10, duration: 50, intensity: 7, notes: '조깅 10k', cadence: 175, date: new Date(Date.now() - 86400000 * 1).toISOString() },
+      { id: 2, type: 'bike', distance: 40, duration: 80, intensity: 6, notes: '평지 라이딩', power: 180, cadence: 90, date: new Date(Date.now() - 86400000 * 2).toISOString() },
+      { id: 3, type: 'swim', distance: 1500, duration: 30, intensity: 5, notes: '드릴 위주', date: new Date(Date.now() - 86400000 * 3).toISOString() },
+      { id: 4, type: 'run', distance: 5, duration: 22, intensity: 8, notes: '인터벌 훈련', cadence: 182, date: new Date(Date.now() - 86400000 * 4).toISOString() },
     ];
     localStorage.setItem('tri-activities', JSON.stringify(seed));
     return seed;
@@ -44,9 +44,9 @@ export class TrainingStore {
 
   getTotals() {
     return this.activities.reduce((acc, curr) => {
-      const type = curr.type; // 'swim', 'bike', 'run'
-      acc[type].dist += parseFloat(curr.distance);
-      acc[type].time += parseFloat(curr.duration);
+      const type = curr.type;
+      acc[type].dist += parseFloat(curr.distance || 0);
+      acc[type].time += parseFloat(curr.duration || 0);
       return acc;
     }, {
       swim: { dist: 0, time: 0 },
@@ -56,7 +56,6 @@ export class TrainingStore {
   }
 
   getWeeklyData() {
-    // Simplified: Group by last 7 days
     const labels = [];
     const swimData = [];
     const bikeData = [];
